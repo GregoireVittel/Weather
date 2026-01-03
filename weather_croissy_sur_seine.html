@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast - Croissy-sur-Seine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .location {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.5em;
+            color: #667eea;
+        }
+
+        .current-weather {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .current-main {
+            text-align: center;
+        }
+
+        .current-temp {
+            font-size: 4em;
+            font-weight: bold;
+        }
+
+        .current-condition {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+
+        .current-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .detail-item {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .detail-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .detail-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        h2 {
+            color: #333;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .hourly-forecast {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+
+        .hourly-container {
+            display: flex;
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .hour-card {
+            min-width: 120px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: transform 0.2s;
+        }
+
+        .hour-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .hour-time {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .hour-temp {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .hour-detail {
+            font-size: 0.85em;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .daily-forecast {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .day-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: transform 0.2s;
+        }
+
+        .day-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .day-name {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .day-date {
+            font-size: 0.85em;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .day-temps {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .temp-max {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .temp-min {
+            font-size: 1.5em;
+            color: #4dabf7;
+        }
+
+        .day-detail {
+            font-size: 0.85em;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .icon {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        .error {
+            background: #ff6b6b;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .current-weather {
+                grid-template-columns: 1fr;
+            }
+
+            .current-details {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌤️ Weather Forecast</h1>
+        <div class="location">Croissy-sur-Seine, France</div>
+
+        <div id="loading" class="loading">Loading weather data...</div>
+        <div id="error" class="error" style="display:none;"></div>
+
+        <div id="current-weather" style="display:none;"></div>
+        <div id="hourly-section" style="display:none;">
+            <h2>📊 Hourly Forecast (48 Hours)</h2>
+            <div class="hourly-forecast">
+                <div id="hourly-forecast" class="hourly-container"></div>
+            </div>
+        </div>
+
+        <div id="daily-section" style="display:none;">
+            <h2>📅 7-Day Forecast</h2>
+            <div id="daily-forecast" class="daily-forecast"></div>
+        </div>
+    </div>
+
+    <script>
+        // Coordinates for Croissy-sur-Seine
+        const latitude = 48.8797;
+        const longitude = 2.1439;
+
+        // Weather code descriptions
+        const weatherCodes = {
+            0: { description: 'Clear sky', icon: '☀️' },
+            1: { description: 'Mainly clear', icon: '🌤️' },
+            2: { description: 'Partly cloudy', icon: '⛅' },
+            3: { description: 'Overcast', icon: '☁️' },
+            45: { description: 'Foggy', icon: '🌫️' },
+            48: { description: 'Foggy', icon: '🌫️' },
+            51: { description: 'Light drizzle', icon: '🌦️' },
+            53: { description: 'Drizzle', icon: '🌦️' },
+            55: { description: 'Heavy drizzle', icon: '🌧️' },
+            61: { description: 'Light rain', icon: '🌧️' },
+            63: { description: 'Rain', icon: '🌧️' },
+            65: { description: 'Heavy rain', icon: '⛈️' },
+            71: { description: 'Light snow', icon: '🌨️' },
+            73: { description: 'Snow', icon: '❄️' },
+            75: { description: 'Heavy snow', icon: '❄️' },
+            77: { description: 'Snow grains', icon: '❄️' },
+            80: { description: 'Light showers', icon: '🌦️' },
+            81: { description: 'Showers', icon: '🌧️' },
+            82: { description: 'Heavy showers', icon: '⛈️' },
+            85: { description: 'Light snow showers', icon: '🌨️' },
+            86: { description: 'Snow showers', icon: '❄️' },
+            95: { description: 'Thunderstorm', icon: '⛈️' },
+            96: { description: 'Thunderstorm with hail', icon: '⛈️' },
+            99: { description: 'Thunderstorm with hail', icon: '⛈️' }
+        };
+
+        function getWeatherDescription(code) {
+            return weatherCodes[code] || { description: 'Unknown', icon: '🌡️' };
+        }
+
+        function formatTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        }
+
+        function getDayName(dateString) {
+            const date = new Date(dateString);
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            if (date.toDateString() === today.toDateString()) return 'Today';
+            if (date.toDateString() === tomorrow.toDateString()) return 'Tomorrow';
+            return date.toLocaleDateString('en-US', { weekday: 'long' });
+        }
+
+        async function fetchWeather() {
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m&hourly=temperature_2m,precipitation_probability,precipitation,rain,weather_code,cloud_cover,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum,wind_speed_10m_max,precipitation_probability_max&timezone=Europe%2FParis`;
+
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Failed to fetch weather data');
+
+                const data = await response.json();
+
+                displayCurrentWeather(data.current, data.current_units);
+                displayHourlyForecast(data.hourly, data.hourly_units);
+                displayDailyForecast(data.daily, data.daily_units);
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('current-weather').style.display = 'grid';
+                document.getElementById('hourly-section').style.display = 'block';
+                document.getElementById('daily-section').style.display = 'block';
+
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = 'Failed to load weather data. Please refresh the page.';
+                console.error('Error:', error);
+            }
+        }
+
+        function displayCurrentWeather(current, units) {
+            const weather = getWeatherDescription(current.weather_code);
+            const html = `
+                <div class="current-main">
+                    <div class="icon">${weather.icon}</div>
+                    <div class="current-temp">${Math.round(current.temperature_2m)}°C</div>
+                    <div class="current-condition">${weather.description}</div>
+                    <div style="margin-top: 10px; opacity: 0.9;">
+                        Feels like ${Math.round(current.apparent_temperature)}°C
+                    </div>
+                </div>
+                <div class="current-details">
+                    <div class="detail-item">
+                        <div class="detail-label">💧 Humidity</div>
+                        <div class="detail-value">${current.relative_humidity_2m}%</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">💨 Wind Speed</div>
+                        <div class="detail-value">${Math.round(current.wind_speed_10m)} km/h</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">🌧️ Rain</div>
+                        <div class="detail-value">${current.rain} mm</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">☁️ Cloud Cover</div>
+                        <div class="detail-value">${current.cloud_cover}%</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('current-weather').innerHTML = html;
+        }
+
+        function displayHourlyForecast(hourly, units) {
+            const container = document.getElementById('hourly-forecast');
+            let html = '';
+
+            // Display next 48 hours
+            for (let i = 0; i < 48; i++) {
+                const weather = getWeatherDescription(hourly.weather_code[i]);
+                const time = formatTime(hourly.time[i]);
+
+                html += `
+                    <div class="hour-card">
+                        <div class="hour-time">${time}</div>
+                        <div class="icon">${weather.icon}</div>
+                        <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}°</div>
+                        <div class="hour-detail">💧 ${hourly.precipitation_probability[i]}%</div>
+                        <div class="hour-detail">🌧️ ${hourly.rain[i]} mm</div>
+                        <div class="hour-detail">💨 ${Math.round(hourly.wind_speed_10m[i])} km/h</div>
+                        <div class="hour-detail">☁️ ${hourly.cloud_cover[i]}%</div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function displayDailyForecast(daily, units) {
+            const container = document.getElementById('daily-forecast');
+            let html = '';
+
+            // Display 7 days
+            for (let i = 0; i < 7; i++) {
+                const weather = getWeatherDescription(daily.weather_code[i]);
+                const dayName = getDayName(daily.time[i]);
+                const date = formatDate(daily.time[i]);
+
+                html += `
+                    <div class="day-card">
+                        <div class="day-name">${dayName}</div>
+                        <div class="day-date">${date}</div>
+                        <div class="icon">${weather.icon}</div>
+                        <div style="font-size: 0.9em; color: #666; margin: 10px 0;">${weather.description}</div>
+                        <div class="day-temps">
+                            <span class="temp-max">${Math.round(daily.temperature_2m_max[i])}°</span>
+                            <span class="temp-min">${Math.round(daily.temperature_2m_min[i])}°</span>
+                        </div>
+                        <div class="day-detail">💧 Rain: ${daily.precipitation_probability_max[i]}%</div>
+                        <div class="day-detail">🌧️ ${daily.rain_sum[i]} mm</div>
+                        <div class="day-detail">💨 ${Math.round(daily.wind_speed_10m_max[i])} km/h</div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Fetch weather data when page loads
+        fetchWeather();
+
+        // Refresh every 10 minutes
+        setInterval(fetchWeather, 600000);
+    </script>
+</body>
+</html>
