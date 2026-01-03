@@ -144,12 +144,13 @@
             background: rgba(15,40,71,0.9);
             color: white;
             border-radius: 10px 10px 0 0;
-            padding: 15px 20px;
+            padding: 10px 15px;
             display: grid;
-            grid-template-columns: 100px 60px 100px auto 80px 80px 80px 80px;
+            grid-template-columns: 80px 40px 70px auto 60px 60px 60px 60px;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             font-weight: bold;
+            font-size: 0.85em;
             position: sticky;
             top: 0;
             z-index: 10;
@@ -168,13 +169,13 @@
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
             color: white;
-            padding: 15px 20px;
+            padding: 10px 15px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             transition: all 0.2s;
             display: grid;
-            grid-template-columns: 100px 60px 100px auto 80px 80px 80px 80px;
+            grid-template-columns: 80px 40px 70px auto 60px 60px 60px 60px;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
         .hour-card:last-child {
@@ -188,27 +189,27 @@
         .hour-time {
             font-weight: bold;
             color: white;
-            font-size: 1.1em;
+            font-size: 0.95em;
         }
 
         .hour-icon {
-            font-size: 2em;
+            font-size: 1.5em;
             text-align: center;
         }
 
         .hour-temp {
-            font-size: 1.8em;
+            font-size: 1.3em;
             font-weight: bold;
             color: white;
         }
 
         .hour-condition {
-            font-size: 0.95em;
+            font-size: 0.85em;
             color: rgba(255,255,255,0.9);
         }
 
         .hour-detail {
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: rgba(255,255,255,0.9);
             text-align: center;
         }
@@ -293,9 +294,9 @@
         @media (max-width: 1024px) {
             .hour-header,
             .hour-card {
-                grid-template-columns: 90px 50px 80px 1fr 60px 60px;
-                gap: 10px;
-                font-size: 0.95em;
+                grid-template-columns: 80px 40px 70px 1fr 60px 60px;
+                gap: 8px;
+                font-size: 0.9em;
             }
 
             .hour-detail:nth-child(7),
@@ -375,57 +376,50 @@
                 font-size: 1.1em;
             }
 
-            /* Mobile hourly forecast */
+            /* Mobile hourly forecast - keep one line */
             .hourly-forecast {
                 max-height: 500px;
             }
 
             .hour-header {
-                display: none;
+                display: grid;
+                grid-template-columns: 65px 35px 55px 1fr 50px 50px;
+                padding: 8px 10px;
+                font-size: 0.75em;
+                gap: 6px;
             }
 
             .hour-card {
-                grid-template-columns: 1fr;
-                gap: 12px;
-                padding: 15px;
-                text-align: left;
-                border-radius: 10px;
-                margin-bottom: 8px;
-            }
-
-            .hour-card:last-child {
-                border-radius: 10px;
+                grid-template-columns: 65px 35px 55px 1fr 50px 50px;
+                padding: 8px 10px;
+                gap: 6px;
             }
 
             .hour-time {
-                font-size: 1.1em;
-                text-align: left;
+                font-size: 0.85em;
             }
 
             .hour-icon {
-                text-align: left;
-                font-size: 2.5em;
+                font-size: 1.3em;
             }
 
             .hour-temp {
-                font-size: 2em;
-                text-align: left;
+                font-size: 1.1em;
             }
 
             .hour-condition {
-                font-size: 1em;
-                text-align: left;
-                margin-bottom: 8px;
+                font-size: 0.75em;
             }
 
             .hour-detail {
-                text-align: left;
-                font-size: 0.95em;
-                display: inline-block;
-                margin-right: 15px;
-                padding: 5px 10px;
-                background: rgba(255,255,255,0.1);
-                border-radius: 5px;
+                font-size: 0.75em;
+            }
+
+            .hour-detail:nth-child(7),
+            .hour-detail:nth-child(8),
+            .hour-header > div:nth-child(7),
+            .hour-header > div:nth-child(8) {
+                display: none;
             }
 
             /* Mobile daily forecast */
@@ -513,13 +507,35 @@
                 font-size: 2.5em;
             }
 
-            .hour-icon,
-            .icon {
-                font-size: 2em;
+            .hour-header,
+            .hour-card {
+                grid-template-columns: 60px 30px 50px 1fr 45px 45px;
+                padding: 6px 8px;
+                gap: 5px;
+            }
+
+            .hour-header {
+                font-size: 0.7em;
+            }
+
+            .hour-time {
+                font-size: 0.8em;
+            }
+
+            .hour-icon {
+                font-size: 1.2em;
             }
 
             .hour-temp {
-                font-size: 1.6em;
+                font-size: 1em;
+            }
+
+            .hour-condition {
+                font-size: 0.7em;
+            }
+
+            .hour-detail {
+                font-size: 0.7em;
             }
         }
     </style>
@@ -542,10 +558,10 @@
                         <div></div>
                         <div>Temp</div>
                         <div>Condition</div>
-                        <div>💧 Rain Prob</div>
-                        <div>🌧️ Rain</div>
+                        <div>💧 Rain</div>
+                        <div>🌧️ mm</div>
                         <div>💨 Wind</div>
-                        <div>☁️ Clouds</div>
+                        <div>☁️ Cloud</div>
                     </div>
                 </div>
             </div>
@@ -700,18 +716,17 @@
 
         function displayHourlyForecast(hourly, units) {
             const container = document.getElementById('hourly-forecast');
-            const mobile = isMobile();
 
-            let html = mobile ? '' : `
+            let html = `
                 <div class="hour-header">
                     <div>Time</div>
                     <div></div>
                     <div>Temp</div>
                     <div>Condition</div>
-                    <div>💧 Rain Prob</div>
-                    <div>🌧️ Rain</div>
+                    <div>💧 Rain</div>
+                    <div>🌧️ mm</div>
                     <div>💨 Wind</div>
-                    <div>☁️ Clouds</div>
+                    <div>☁️ Cloud</div>
                 </div>
             `;
 
@@ -720,35 +735,18 @@
                 const description = getWeatherDescription(hourly.weather_code[i]);
                 const time = formatDateTime(hourly.time[i]);
 
-                if (mobile) {
-                    html += `
-                        <div class="hour-card">
-                            <div class="hour-time">${time}</div>
-                            <div class="hour-icon">${icon}</div>
-                            <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}°C</div>
-                            <div class="hour-condition">${description}</div>
-                            <div>
-                                <span class="hour-detail">💧 ${hourly.precipitation_probability[i]}%</span>
-                                <span class="hour-detail">🌧️ ${hourly.rain[i]} mm</span>
-                                <span class="hour-detail">💨 ${Math.round(hourly.wind_speed_10m[i])} km/h</span>
-                                <span class="hour-detail">☁️ ${hourly.cloud_cover[i]}%</span>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    html += `
-                        <div class="hour-card">
-                            <div class="hour-time">${time}</div>
-                            <div class="hour-icon">${icon}</div>
-                            <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}°C</div>
-                            <div class="hour-condition">${description}</div>
-                            <div class="hour-detail">${hourly.precipitation_probability[i]}%</div>
-                            <div class="hour-detail">${hourly.rain[i]} mm</div>
-                            <div class="hour-detail">${Math.round(hourly.wind_speed_10m[i])} km/h</div>
-                            <div class="hour-detail">${hourly.cloud_cover[i]}%</div>
-                        </div>
-                    `;
-                }
+                html += `
+                    <div class="hour-card">
+                        <div class="hour-time">${time}</div>
+                        <div class="hour-icon">${icon}</div>
+                        <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}°</div>
+                        <div class="hour-condition">${description}</div>
+                        <div class="hour-detail">${hourly.precipitation_probability[i]}%</div>
+                        <div class="hour-detail">${hourly.rain[i]}</div>
+                        <div class="hour-detail">${Math.round(hourly.wind_speed_10m[i])}</div>
+                        <div class="hour-detail">${hourly.cloud_cover[i]}%</div>
+                    </div>
+                `;
             }
 
             container.innerHTML = html;
