@@ -115,14 +115,36 @@
         .hourly-container {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 0;
+        }
+
+        .hour-header {
+            background: #1e3c72;
+            color: white;
+            border-radius: 10px 10px 0 0;
+            padding: 15px 20px;
+            display: grid;
+            grid-template-columns: 100px 60px 100px auto 80px 80px 80px 80px;
+            align-items: center;
+            gap: 15px;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .hour-header > div {
+            text-align: center;
+        }
+
+        .hour-header > div:first-child {
+            text-align: left;
         }
 
         .hour-card {
             background: #f8f9fa;
-            border-radius: 10px;
             padding: 15px 20px;
-            border: 2px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
             transition: all 0.2s;
             display: grid;
             grid-template-columns: 100px 60px 100px auto 80px 80px 80px 80px;
@@ -130,9 +152,12 @@
             gap: 15px;
         }
 
+        .hour-card:last-child {
+            border-radius: 0 0 10px 10px;
+        }
+
         .hour-card:hover {
-            border-color: #1e3c72;
-            background: #f0f4f8;
+            background: #e7f1ff;
         }
 
         .hour-time {
@@ -236,18 +261,17 @@
         }
 
         @media (max-width: 1024px) {
+            .hour-header,
             .hour-card {
-                grid-template-columns: 80px 50px 80px 1fr;
+                grid-template-columns: 80px 50px 80px 1fr 70px 70px;
                 gap: 10px;
             }
 
-            .hour-detail {
+            .hour-detail:nth-child(7),
+            .hour-detail:nth-child(8),
+            .hour-header > div:nth-child(7),
+            .hour-header > div:nth-child(8) {
                 display: none;
-            }
-
-            .hour-detail:nth-child(4),
-            .hour-detail:nth-child(5) {
-                display: block;
             }
         }
 
@@ -278,14 +302,18 @@
                 font-size: 1.8em;
             }
 
+            .hour-header,
             .hour-card {
                 grid-template-columns: 1fr;
                 text-align: center;
             }
 
-            .hour-detail {
-                display: inline;
-                margin: 0 10px;
+            .hour-header {
+                display: none;
+            }
+
+            .hour-card {
+                padding: 15px;
             }
         }
     </style>
@@ -302,7 +330,18 @@
         <div id="hourly-section" style="display:none;">
             <h2>📊 Hourly Forecast (48 Hours)</h2>
             <div class="hourly-forecast">
-                <div id="hourly-forecast" class="hourly-container"></div>
+                <div id="hourly-forecast" class="hourly-container">
+                    <div class="hour-header">
+                        <div>Time</div>
+                        <div></div>
+                        <div>Temp</div>
+                        <div>Condition</div>
+                        <div>💧 Rain Prob</div>
+                        <div>🌧️ Rain</div>
+                        <div>💨 Wind</div>
+                        <div>☁️ Clouds</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -451,7 +490,18 @@
 
         function displayHourlyForecast(hourly, units) {
             const container = document.getElementById('hourly-forecast');
-            let html = '';
+            let html = `
+                <div class="hour-header">
+                    <div>Time</div>
+                    <div></div>
+                    <div>Temp</div>
+                    <div>Condition</div>
+                    <div>💧 Rain Prob</div>
+                    <div>🌧️ Rain</div>
+                    <div>💨 Wind</div>
+                    <div>☁️ Clouds</div>
+                </div>
+            `;
 
             for (let i = 0; i < 48; i++) {
                 const icon = getWeatherIcon(hourly.weather_code[i], hourly.time[i]);
@@ -464,10 +514,10 @@
                         <div class="hour-icon">${icon}</div>
                         <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}°C</div>
                         <div class="hour-condition">${description}</div>
-                        <div class="hour-detail">💧 ${hourly.precipitation_probability[i]}%</div>
-                        <div class="hour-detail">🌧️ ${hourly.rain[i]} mm</div>
-                        <div class="hour-detail">💨 ${Math.round(hourly.wind_speed_10m[i])} km/h</div>
-                        <div class="hour-detail">☁️ ${hourly.cloud_cover[i]}%</div>
+                        <div class="hour-detail">${hourly.precipitation_probability[i]}%</div>
+                        <div class="hour-detail">${hourly.rain[i]} mm</div>
+                        <div class="hour-detail">${Math.round(hourly.wind_speed_10m[i])} km/h</div>
+                        <div class="hour-detail">${hourly.cloud_cover[i]}%</div>
                     </div>
                 `;
             }
