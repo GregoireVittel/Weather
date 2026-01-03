@@ -563,11 +563,11 @@
                         <div>Time</div>
                         <div></div>
                         <div>Temp</div>
-                        <div>Condition</div>
                         <div>💧 Rain</div>
                         <div>🌧️ mm</div>
                         <div>💨 Wind</div>
                         <div>☁️ Cloud</div>
+                        <div>Condition</div>
                     </div>
                 </div>
             </div>
@@ -724,11 +724,11 @@
                     <div>Time</div>
                     <div></div>
                     <div>Temp</div>
-                    <div>Condition</div>
                     <div>💧 Rain</div>
                     <div>🌧️ mm</div>
                     <div>💨 Wind</div>
                     <div>☁️ Cloud</div>
+                    <div>Condition</div>
                 </div>
             `;
 
@@ -742,11 +742,11 @@
                         <div class="hour-time">${time}</div>
                         <div class="hour-icon">${icon}</div>
                         <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}°</div>
-                        <div class="hour-condition">${description}</div>
                         <div class="hour-detail">${hourly.precipitation_probability[i]}%</div>
                         <div class="hour-detail">${hourly.rain[i]}</div>
                         <div class="hour-detail">${Math.round(hourly.wind_speed_10m[i])}</div>
                         <div class="hour-detail">${hourly.cloud_cover[i]}%</div>
+                        <div class="hour-condition">${description}</div>
                     </div>
                 `;
             }
