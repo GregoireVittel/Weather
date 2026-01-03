@@ -72,10 +72,14 @@
         .current-temp {
             font-size: 3.5em;
             font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
 
         .current-condition {
             font-size: 1.2em;
+            color: #87CEEB;
+            font-weight: 600;
         }
 
         .current-details {
@@ -143,15 +147,15 @@
 
         .hour-header {
             background: rgba(15,40,71,0.9);
-            color: white;
+            color: #87CEEB;
             border-radius: 10px 10px 0 0;
-            padding: 10px 15px;
+            padding: 12px 15px;
             display: grid;
-            grid-template-columns: 80px 40px 70px auto 60px 60px 60px 60px;
+            grid-template-columns: 80px 40px 80px 70px 70px 70px 70px;
             align-items: center;
             gap: 10px;
             font-weight: bold;
-            font-size: 0.85em;
+            font-size: 0.95em;
             position: sticky;
             top: 0;
             z-index: 10;
@@ -174,7 +178,7 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
             transition: all 0.2s;
             display: grid;
-            grid-template-columns: 80px 40px 70px auto 60px 60px 60px 60px;
+            grid-template-columns: 80px 40px 80px 70px 70px 70px 70px;
             align-items: center;
             gap: 10px;
         }
@@ -199,9 +203,9 @@
         }
 
         .hour-temp {
-            font-size: 1.3em;
+            font-size: 1.4em;
             font-weight: bold;
-            color: white;
+            color: #FFD700;
         }
 
         .hour-condition {
@@ -210,7 +214,7 @@
         }
 
         .hour-detail {
-            font-size: 1.3em;
+            font-size: 0.85em;
             color: rgba(255,255,255,0.9);
             text-align: center;
         }
@@ -427,7 +431,7 @@
             }
 
             .hour-detail {
-                font-size: 1.1em;
+                font-size: 0.75em;
             }
 
             .hour-detail:nth-child(7),
@@ -519,7 +523,7 @@
             }
 
             .hour-detail {
-                font-size: 0.95em;
+                font-size: 0.7em;
             }
 
             .day-card {
@@ -563,7 +567,6 @@
                         <div>Time</div>
                         <div></div>
                         <div>Temp</div>
-                        <div>Condition</div>
                         <div>💧 Rain</div>
                         <div>🌧️ mm</div>
                         <div>💨 Wind</div>
@@ -724,7 +727,6 @@
                     <div>Time</div>
                     <div></div>
                     <div>Temp</div>
-                    <div>Condition</div>
                     <div>💧 Rain</div>
                     <div>🌧️ mm</div>
                     <div>💨 Wind</div>
@@ -742,7 +744,6 @@
                         <div class="hour-time">${time}</div>
                         <div class="hour-icon">${icon}</div>
                         <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}°</div>
-                        <div class="hour-condition">${description}</div>
                         <div class="hour-detail">${hourly.precipitation_probability[i]}%</div>
                         <div class="hour-detail">${hourly.rain[i]}</div>
                         <div class="hour-detail">${Math.round(hourly.wind_speed_10m[i])}</div>
