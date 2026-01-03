@@ -30,15 +30,16 @@
         h1 {
             color: white;
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 2.5em;
+            margin-bottom: 5px;
+            font-size: 1.5em;
         }
 
         .location {
             text-align: center;
-            color: rgba(255,255,255,0.9);
+            color: white;
             margin-bottom: 20px;
-            font-size: 1.2em;
+            font-size: 1.8em;
+            font-weight: 600;
         }
 
         .loading {
@@ -215,9 +216,9 @@
         }
 
         .daily-forecast {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
             margin-bottom: 30px;
         }
 
@@ -225,59 +226,68 @@
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
             border-radius: 10px;
-            padding: 20px;
-            text-align: center;
+            padding: 12px 15px;
             border: 1px solid rgba(255,255,255,0.2);
-            transition: transform 0.2s;
+            transition: all 0.2s;
             color: white;
+            display: grid;
+            grid-template-columns: 100px 40px 80px auto 60px 60px 60px;
+            align-items: center;
+            gap: 10px;
         }
 
         .day-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.15);
-            border-color: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.2);
+        }
+
+        .day-name-date {
+            text-align: left;
         }
 
         .day-name {
             font-weight: bold;
             color: white;
-            margin-bottom: 10px;
-            font-size: 1.1em;
+            font-size: 1em;
+            margin-bottom: 2px;
         }
 
         .day-date {
-            font-size: 0.85em;
+            font-size: 0.8em;
             color: rgba(255,255,255,0.8);
-            margin-bottom: 15px;
+        }
+
+        .day-icon {
+            font-size: 1.8em;
+            text-align: center;
         }
 
         .day-temps {
             display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 8px;
+            align-items: center;
         }
 
         .temp-max {
-            font-size: 1.5em;
+            font-size: 1.3em;
             font-weight: bold;
             color: #ff6b6b;
         }
 
         .temp-min {
-            font-size: 1.5em;
+            font-size: 1.1em;
             color: #4dabf7;
+        }
+
+        .day-condition {
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.9);
+            text-align: left;
         }
 
         .day-detail {
             font-size: 0.85em;
             color: rgba(255,255,255,0.9);
-            margin: 5px 0;
-        }
-
-        .icon {
-            font-size: 2em;
-            margin: 10px 0;
+            text-align: center;
         }
 
         .error {
@@ -306,8 +316,13 @@
                 display: none;
             }
 
-            .daily-forecast {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            .day-card {
+                grid-template-columns: 90px 40px 70px 1fr 60px 60px;
+                gap: 8px;
+            }
+
+            .day-detail:nth-child(7) {
+                display: none;
             }
         }
 
@@ -323,12 +338,12 @@
             }
 
             h1 {
-                font-size: 1.8em;
-                margin-bottom: 5px;
+                font-size: 1.2em;
+                margin-bottom: 3px;
             }
 
             .location {
-                font-size: 1em;
+                font-size: 1.4em;
                 margin-bottom: 15px;
             }
 
@@ -376,7 +391,7 @@
                 font-size: 1.1em;
             }
 
-            /* Mobile hourly forecast - keep one line */
+            /* Mobile hourly forecast */
             .hourly-forecast {
                 max-height: 500px;
             }
@@ -423,84 +438,53 @@
             }
 
             /* Mobile daily forecast */
-            .daily-forecast {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-
             .day-card {
-                padding: 15px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                text-align: left;
-            }
-
-            .day-card:hover {
-                transform: none;
-            }
-
-            .day-info {
-                display: flex;
-                align-items: center;
-                gap: 15px;
-            }
-
-            .day-left {
-                min-width: 100px;
+                grid-template-columns: 70px 35px 60px 1fr 50px 50px;
+                padding: 10px 12px;
+                gap: 8px;
             }
 
             .day-name {
-                font-size: 1.1em;
-                margin-bottom: 3px;
+                font-size: 0.9em;
             }
 
             .day-date {
-                margin-bottom: 0;
+                font-size: 0.75em;
             }
 
-            .icon {
-                font-size: 2.5em;
-                margin: 0;
-            }
-
-            .day-middle {
-                flex: 1;
-                text-align: left;
-            }
-
-            .day-temps {
-                margin: 8px 0;
-                justify-content: flex-start;
+            .day-icon {
+                font-size: 1.5em;
             }
 
             .temp-max {
-                font-size: 1.6em;
+                font-size: 1.1em;
             }
 
             .temp-min {
-                font-size: 1.4em;
+                font-size: 1em;
             }
 
-            .day-details-mobile {
-                display: flex;
-                gap: 8px;
-                flex-wrap: wrap;
+            .day-condition {
+                font-size: 0.75em;
             }
 
             .day-detail {
-                font-size: 0.8em;
-                background: rgba(255,255,255,0.1);
-                padding: 3px 8px;
-                border-radius: 5px;
-                margin: 0;
+                font-size: 0.75em;
+            }
+
+            .day-detail:nth-child(7) {
+                display: none;
             }
         }
 
         /* iPhone SE and small phones */
         @media (max-width: 375px) {
             h1 {
-                font-size: 1.5em;
+                font-size: 1em;
+            }
+
+            .location {
+                font-size: 1.2em;
             }
 
             .current-temp {
@@ -537,13 +521,35 @@
             .hour-detail {
                 font-size: 0.7em;
             }
+
+            .day-card {
+                grid-template-columns: 60px 30px 50px 1fr 45px 45px;
+                padding: 8px 10px;
+                gap: 6px;
+            }
+
+            .day-name {
+                font-size: 0.85em;
+            }
+
+            .day-icon {
+                font-size: 1.3em;
+            }
+
+            .temp-max {
+                font-size: 1em;
+            }
+
+            .temp-min {
+                font-size: 0.9em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🌤️ Weather Forecast</h1>
-        <div class="location">Croissy-sur-Seine, France</div>
+        <div class="location">Croissy-sur-Seine</div>
 
         <div id="loading" class="loading">Loading weather data...</div>
         <div id="error" class="error" style="display:none;"></div>
@@ -645,10 +651,6 @@
             if (date.toDateString() === today.toDateString()) return 'Today';
             if (date.toDateString() === tomorrow.toDateString()) return 'Tomorrow';
             return date.toLocaleDateString('fr-FR', { weekday: 'long' });
-        }
-
-        function isMobile() {
-            return window.innerWidth <= 768;
         }
 
         async function fetchWeather() {
@@ -754,7 +756,6 @@
 
         function displayDailyForecast(daily, units) {
             const container = document.getElementById('daily-forecast');
-            const mobile = isMobile();
             let html = '';
 
             for (let i = 0; i < 7; i++) {
@@ -763,46 +764,23 @@
                 const dayName = getDayName(daily.time[i]);
                 const date = formatDate(daily.time[i]);
 
-                if (mobile) {
-                    html += `
-                        <div class="day-card">
-                            <div class="day-info">
-                                <div class="day-left">
-                                    <div class="day-name">${dayName}</div>
-                                    <div class="day-date">${date}</div>
-                                </div>
-                                <div class="icon">${icon}</div>
-                            </div>
-                            <div class="day-middle">
-                                <div class="day-temps">
-                                    <span class="temp-max">${Math.round(daily.temperature_2m_max[i])}°</span>
-                                    <span class="temp-min">${Math.round(daily.temperature_2m_min[i])}°</span>
-                                </div>
-                                <div class="day-details-mobile">
-                                    <span class="day-detail">💧 ${daily.precipitation_probability_max[i]}%</span>
-                                    <span class="day-detail">🌧️ ${daily.rain_sum[i]} mm</span>
-                                    <span class="day-detail">💨 ${Math.round(daily.wind_speed_10m_max[i])} km/h</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    html += `
-                        <div class="day-card">
+                html += `
+                    <div class="day-card">
+                        <div class="day-name-date">
                             <div class="day-name">${dayName}</div>
                             <div class="day-date">${date}</div>
-                            <div class="icon">${icon}</div>
-                            <div style="font-size: 0.9em; color: rgba(255,255,255,0.9); margin: 10px 0;">${description}</div>
-                            <div class="day-temps">
-                                <span class="temp-max">${Math.round(daily.temperature_2m_max[i])}°</span>
-                                <span class="temp-min">${Math.round(daily.temperature_2m_min[i])}°</span>
-                            </div>
-                            <div class="day-detail">💧 Rain: ${daily.precipitation_probability_max[i]}%</div>
-                            <div class="day-detail">🌧️ ${daily.rain_sum[i]} mm</div>
-                            <div class="day-detail">💨 ${Math.round(daily.wind_speed_10m_max[i])} km/h</div>
                         </div>
-                    `;
-                }
+                        <div class="day-icon">${icon}</div>
+                        <div class="day-temps">
+                            <span class="temp-max">${Math.round(daily.temperature_2m_max[i])}°</span>
+                            <span class="temp-min">${Math.round(daily.temperature_2m_min[i])}°</span>
+                        </div>
+                        <div class="day-condition">${description}</div>
+                        <div class="day-detail">${daily.precipitation_probability_max[i]}%</div>
+                        <div class="day-detail">${daily.rain_sum[i]}</div>
+                        <div class="day-detail">${Math.round(daily.wind_speed_10m_max[i])}</div>
+                    </div>
+                `;
             }
 
             container.innerHTML = html;
