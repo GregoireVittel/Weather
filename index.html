@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             padding: 20px;
             min-height: 100vh;
         }
@@ -37,7 +37,7 @@
         .location {
             text-align: center;
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             font-size: 1.2em;
         }
 
@@ -45,108 +45,122 @@
             text-align: center;
             padding: 50px;
             font-size: 1.5em;
-            color: #667eea;
+            color: #1e3c72;
         }
 
         .current-weather {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
-            padding: 30px;
+            padding: 20px;
             border-radius: 15px;
             margin-bottom: 30px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             gap: 20px;
         }
 
         .current-main {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
         .current-temp {
-            font-size: 4em;
+            font-size: 3.5em;
             font-weight: bold;
         }
 
         .current-condition {
-            font-size: 1.5em;
-            margin-top: 10px;
+            font-size: 1.2em;
         }
 
         .current-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            align-items: center;
+            display: flex;
+            gap: 20px;
         }
 
         .detail-item {
             background: rgba(255,255,255,0.2);
-            padding: 15px;
-            border-radius: 10px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 80px;
         }
 
         .detail-label {
-            font-size: 0.9em;
+            font-size: 0.85em;
             opacity: 0.9;
         }
 
         .detail-value {
-            font-size: 1.5em;
+            font-size: 1.2em;
             font-weight: bold;
-            margin-top: 5px;
+            margin-top: 3px;
         }
 
         h2 {
             color: #333;
             margin: 30px 0 20px 0;
             padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
+            border-bottom: 3px solid #1e3c72;
         }
 
         .hourly-forecast {
-            overflow-x: auto;
             margin-bottom: 30px;
+            max-height: 600px;
+            overflow-y: auto;
         }
 
         .hourly-container {
             display: flex;
-            gap: 15px;
-            padding: 10px 0;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .hour-card {
-            min-width: 120px;
             background: #f8f9fa;
             border-radius: 10px;
-            padding: 15px;
-            text-align: center;
+            padding: 15px 20px;
             border: 2px solid #e9ecef;
-            transition: transform 0.2s;
+            transition: all 0.2s;
+            display: grid;
+            grid-template-columns: 100px 60px 100px auto 80px 80px 80px 80px;
+            align-items: center;
+            gap: 15px;
         }
 
         .hour-card:hover {
-            transform: translateY(-5px);
-            border-color: #667eea;
+            border-color: #1e3c72;
+            background: #f0f4f8;
         }
 
         .hour-time {
             font-weight: bold;
-            color: #667eea;
-            margin-bottom: 10px;
+            color: #1e3c72;
+            font-size: 1.1em;
+        }
+
+        .hour-icon {
+            font-size: 2em;
+            text-align: center;
         }
 
         .hour-temp {
             font-size: 1.8em;
             font-weight: bold;
             color: #333;
-            margin: 10px 0;
+        }
+
+        .hour-condition {
+            font-size: 0.95em;
+            color: #666;
         }
 
         .hour-detail {
-            font-size: 0.85em;
+            font-size: 0.9em;
             color: #666;
-            margin: 5px 0;
+            text-align: center;
         }
 
         .daily-forecast {
@@ -167,12 +181,12 @@
 
         .day-card:hover {
             transform: translateY(-5px);
-            border-color: #667eea;
+            border-color: #1e3c72;
         }
 
         .day-name {
             font-weight: bold;
-            color: #667eea;
+            color: #1e3c72;
             margin-bottom: 10px;
             font-size: 1.1em;
         }
@@ -221,17 +235,57 @@
             margin: 20px 0;
         }
 
+        @media (max-width: 1024px) {
+            .hour-card {
+                grid-template-columns: 80px 50px 80px 1fr;
+                gap: 10px;
+            }
+
+            .hour-detail {
+                display: none;
+            }
+
+            .hour-detail:nth-child(4),
+            .hour-detail:nth-child(5) {
+                display: block;
+            }
+        }
+
         @media (max-width: 768px) {
             .current-weather {
-                grid-template-columns: 1fr;
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .current-main {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
             }
 
             .current-details {
-                grid-template-columns: 1fr 1fr;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .detail-item {
+                min-width: 70px;
+                padding: 8px 12px;
             }
 
             h1 {
                 font-size: 1.8em;
+            }
+
+            .hour-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hour-detail {
+                display: inline;
+                margin: 0 10px;
             }
         }
     </style>
@@ -259,50 +313,66 @@
     </div>
 
     <script>
-        // Coordinates for Croissy-sur-Seine
         const latitude = 48.8797;
         const longitude = 2.1439;
 
-        // Weather code descriptions
         const weatherCodes = {
-            0: { description: 'Clear sky', icon: '☀️' },
-            1: { description: 'Mainly clear', icon: '🌤️' },
-            2: { description: 'Partly cloudy', icon: '⛅' },
-            3: { description: 'Overcast', icon: '☁️' },
-            45: { description: 'Foggy', icon: '🌫️' },
-            48: { description: 'Foggy', icon: '🌫️' },
-            51: { description: 'Light drizzle', icon: '🌦️' },
-            53: { description: 'Drizzle', icon: '🌦️' },
-            55: { description: 'Heavy drizzle', icon: '🌧️' },
-            61: { description: 'Light rain', icon: '🌧️' },
-            63: { description: 'Rain', icon: '🌧️' },
-            65: { description: 'Heavy rain', icon: '⛈️' },
-            71: { description: 'Light snow', icon: '🌨️' },
-            73: { description: 'Snow', icon: '❄️' },
-            75: { description: 'Heavy snow', icon: '❄️' },
-            77: { description: 'Snow grains', icon: '❄️' },
-            80: { description: 'Light showers', icon: '🌦️' },
-            81: { description: 'Showers', icon: '🌧️' },
-            82: { description: 'Heavy showers', icon: '⛈️' },
-            85: { description: 'Light snow showers', icon: '🌨️' },
-            86: { description: 'Snow showers', icon: '❄️' },
-            95: { description: 'Thunderstorm', icon: '⛈️' },
-            96: { description: 'Thunderstorm with hail', icon: '⛈️' },
-            99: { description: 'Thunderstorm with hail', icon: '⛈️' }
+            0: { description: 'Clear sky', iconDay: '☀️', iconNight: '🌙' },
+            1: { description: 'Mainly clear', iconDay: '🌤️', iconNight: '🌙' },
+            2: { description: 'Partly cloudy', iconDay: '⛅', iconNight: '☁️' },
+            3: { description: 'Overcast', iconDay: '☁️', iconNight: '☁️' },
+            45: { description: 'Foggy', iconDay: '🌫️', iconNight: '🌫️' },
+            48: { description: 'Foggy', iconDay: '🌫️', iconNight: '🌫️' },
+            51: { description: 'Light drizzle', iconDay: '🌦️', iconNight: '🌧️' },
+            53: { description: 'Drizzle', iconDay: '🌦️', iconNight: '🌧️' },
+            55: { description: 'Heavy drizzle', iconDay: '🌧️', iconNight: '🌧️' },
+            61: { description: 'Light rain', iconDay: '🌧️', iconNight: '🌧️' },
+            63: { description: 'Rain', iconDay: '🌧️', iconNight: '🌧️' },
+            65: { description: 'Heavy rain', iconDay: '⛈️', iconNight: '⛈️' },
+            71: { description: 'Light snow', iconDay: '🌨️', iconNight: '🌨️' },
+            73: { description: 'Snow', iconDay: '❄️', iconNight: '❄️' },
+            75: { description: 'Heavy snow', iconDay: '❄️', iconNight: '❄️' },
+            77: { description: 'Snow grains', iconDay: '❄️', iconNight: '❄️' },
+            80: { description: 'Light showers', iconDay: '🌦️', iconNight: '🌧️' },
+            81: { description: 'Showers', iconDay: '🌧️', iconNight: '🌧️' },
+            82: { description: 'Heavy showers', iconDay: '⛈️', iconNight: '⛈️' },
+            85: { description: 'Light snow showers', iconDay: '🌨️', iconNight: '🌨️' },
+            86: { description: 'Snow showers', iconDay: '❄️', iconNight: '❄️' },
+            95: { description: 'Thunderstorm', iconDay: '⛈️', iconNight: '⛈️' },
+            96: { description: 'Thunderstorm with hail', iconDay: '⛈️', iconNight: '⛈️' },
+            99: { description: 'Thunderstorm with hail', iconDay: '⛈️', iconNight: '⛈️' }
         };
 
+        function isNightTime(dateString) {
+            const date = new Date(dateString);
+            const hour = date.getHours();
+            return hour < 6 || hour >= 20;
+        }
+
+        function getWeatherIcon(code, dateString) {
+            const weather = weatherCodes[code] || { iconDay: '🌡️', iconNight: '🌡️' };
+            return isNightTime(dateString) ? weather.iconNight : weather.iconDay;
+        }
+
         function getWeatherDescription(code) {
-            return weatherCodes[code] || { description: 'Unknown', icon: '🌡️' };
+            return (weatherCodes[code] || { description: 'Unknown' }).description;
         }
 
         function formatTime(dateString) {
             const date = new Date(dateString);
-            return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+            return date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', hour12: false });
+        }
+
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            const dayName = date.toLocaleDateString('fr-FR', { weekday: 'short' });
+            const time = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', hour12: false });
+            return `${dayName} ${time}`;
         }
 
         function formatDate(dateString) {
             const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            return date.toLocaleDateString('fr-FR', { month: 'short', day: 'numeric' });
         }
 
         function getDayName(dateString) {
@@ -313,7 +383,7 @@
 
             if (date.toDateString() === today.toDateString()) return 'Today';
             if (date.toDateString() === tomorrow.toDateString()) return 'Tomorrow';
-            return date.toLocaleDateString('en-US', { weekday: 'long' });
+            return date.toLocaleDateString('fr-FR', { weekday: 'long' });
         }
 
         async function fetchWeather() {
@@ -330,7 +400,7 @@
                 displayDailyForecast(data.daily, data.daily_units);
 
                 document.getElementById('loading').style.display = 'none';
-                document.getElementById('current-weather').style.display = 'grid';
+                document.getElementById('current-weather').style.display = 'flex';
                 document.getElementById('hourly-section').style.display = 'block';
                 document.getElementById('daily-section').style.display = 'block';
 
@@ -343,14 +413,18 @@
         }
 
         function displayCurrentWeather(current, units) {
-            const weather = getWeatherDescription(current.weather_code);
+            const icon = getWeatherIcon(current.weather_code, new Date().toISOString());
+            const description = getWeatherDescription(current.weather_code);
+
             const html = `
                 <div class="current-main">
-                    <div class="icon">${weather.icon}</div>
-                    <div class="current-temp">${Math.round(current.temperature_2m)}°C</div>
-                    <div class="current-condition">${weather.description}</div>
-                    <div style="margin-top: 10px; opacity: 0.9;">
-                        Feels like ${Math.round(current.apparent_temperature)}°C
+                    <div class="hour-icon">${icon}</div>
+                    <div>
+                        <div class="current-temp">${Math.round(current.temperature_2m)}°C</div>
+                        <div class="current-condition">${description}</div>
+                        <div style="margin-top: 5px; opacity: 0.9; font-size: 0.95em;">
+                            Feels like ${Math.round(current.apparent_temperature)}°C
+                        </div>
                     </div>
                 </div>
                 <div class="current-details">
@@ -359,7 +433,7 @@
                         <div class="detail-value">${current.relative_humidity_2m}%</div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-label">💨 Wind Speed</div>
+                        <div class="detail-label">💨 Wind</div>
                         <div class="detail-value">${Math.round(current.wind_speed_10m)} km/h</div>
                     </div>
                     <div class="detail-item">
@@ -367,7 +441,7 @@
                         <div class="detail-value">${current.rain} mm</div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-label">☁️ Cloud Cover</div>
+                        <div class="detail-label">☁️ Clouds</div>
                         <div class="detail-value">${current.cloud_cover}%</div>
                     </div>
                 </div>
@@ -379,16 +453,17 @@
             const container = document.getElementById('hourly-forecast');
             let html = '';
 
-            // Display next 48 hours
             for (let i = 0; i < 48; i++) {
-                const weather = getWeatherDescription(hourly.weather_code[i]);
-                const time = formatTime(hourly.time[i]);
+                const icon = getWeatherIcon(hourly.weather_code[i], hourly.time[i]);
+                const description = getWeatherDescription(hourly.weather_code[i]);
+                const time = formatDateTime(hourly.time[i]);
 
                 html += `
                     <div class="hour-card">
                         <div class="hour-time">${time}</div>
-                        <div class="icon">${weather.icon}</div>
-                        <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}°</div>
+                        <div class="hour-icon">${icon}</div>
+                        <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}°C</div>
+                        <div class="hour-condition">${description}</div>
                         <div class="hour-detail">💧 ${hourly.precipitation_probability[i]}%</div>
                         <div class="hour-detail">🌧️ ${hourly.rain[i]} mm</div>
                         <div class="hour-detail">💨 ${Math.round(hourly.wind_speed_10m[i])} km/h</div>
@@ -404,9 +479,9 @@
             const container = document.getElementById('daily-forecast');
             let html = '';
 
-            // Display 7 days
             for (let i = 0; i < 7; i++) {
-                const weather = getWeatherDescription(daily.weather_code[i]);
+                const icon = getWeatherIcon(daily.weather_code[i], daily.time[i] + 'T12:00:00');
+                const description = getWeatherDescription(daily.weather_code[i]);
                 const dayName = getDayName(daily.time[i]);
                 const date = formatDate(daily.time[i]);
 
@@ -414,8 +489,8 @@
                     <div class="day-card">
                         <div class="day-name">${dayName}</div>
                         <div class="day-date">${date}</div>
-                        <div class="icon">${weather.icon}</div>
-                        <div style="font-size: 0.9em; color: #666; margin: 10px 0;">${weather.description}</div>
+                        <div class="icon">${icon}</div>
+                        <div style="font-size: 0.9em; color: #666; margin: 10px 0;">${description}</div>
                         <div class="day-temps">
                             <span class="temp-max">${Math.round(daily.temperature_2m_max[i])}°</span>
                             <span class="temp-min">${Math.round(daily.temperature_2m_min[i])}°</span>
@@ -430,10 +505,7 @@
             container.innerHTML = html;
         }
 
-        // Fetch weather data when page loads
         fetchWeather();
-
-        // Refresh every 10 minutes
         setInterval(fetchWeather, 600000);
     </script>
 </body>
