@@ -34,60 +34,7 @@
             font-size: 1.5em;
         }
 
-        .controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .city-selector {
-            padding: 10px 15px;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 10px;
-            color: white;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .city-selector:hover {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.5);
-        }
-
-        .city-selector option {
-            background: #1e3c72;
-            color: white;
-        }
-
-        .unit-toggle {
-            padding: 10px 20px;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 10px;
-            color: white;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-        }
-
-        .unit-toggle:hover {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.5);
-        }
-
-        .unit-toggle.active {
-            background: #FFD700;
-            color: #1e3c72;
-            border-color: #FFD700;
-        }
-
-                .location {
+        .location {
             text-align: center;
             color: white;
             margin-bottom: 20px;
@@ -106,9 +53,9 @@
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
             color: white;
-            padding: 15px 20px;
+            padding: 20px;
             border-radius: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -123,14 +70,14 @@
         }
 
         .current-temp {
-            font-size: 3em;
+            font-size: 3.5em;
             font-weight: bold;
             color: #FFD700;
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
 
         .current-condition {
-            font-size: 1em;
+            font-size: 1.2em;
             color: #87CEEB;
             font-weight: 600;
         }
@@ -636,10 +583,8 @@
     </div>
 
     <script>
-        let latitude = 48.8797;
-        let longitude = 2.1439;
-        let timezone = 'Europe/Paris';
-        let currentUnits = 'metric';
+        const latitude = 48.8797;
+        const longitude = 2.1439;
 
         const weatherCodes = {
             0: { description: 'Clear sky', iconDay: '☀️', iconNight: '🌙' },
@@ -713,10 +658,7 @@
 
         async function fetchWeather() {
             try {
-                const tempUnit = currentUnits === 'imperial' ? '&temperature_unit=fahrenheit' : '';
-                const windUnit = currentUnits === 'imperial' ? '&wind_speed_unit=mph' : '';
-                const precipUnit = currentUnits === 'imperial' ? '&precipitation_unit=inch' : '';
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m&hourly=temperature_2m,precipitation_probability,precipitation,rain,weather_code,cloud_cover,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum,wind_speed_10m_max,precipitation_probability_max&timezone=${encodeURIComponent(timezone)}${tempUnit}${windUnit}${precipUnit}`;
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m&hourly=temperature_2m,precipitation_probability,precipitation,rain,weather_code,cloud_cover,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum,wind_speed_10m_max,precipitation_probability_max&timezone=Europe%2FParis`;
 
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('Failed to fetch weather data');
@@ -743,15 +685,12 @@
         function displayCurrentWeather(current, units) {
             const icon = getWeatherIcon(current.weather_code, new Date().toISOString());
             const description = getWeatherDescription(current.weather_code);
-            const tempUnit = currentUnits === 'imperial' ? '°F' : '°C';
-            const windUnit = currentUnits === 'imperial' ? 'mph' : 'km/h';
-            const precipUnit = currentUnits === 'imperial' ? 'in' : 'mm';
 
             const html = `
                 <div class="current-main">
                     <div class="hour-icon">${icon}</div>
                     <div>
-                        <div class="current-temp">${Math.round(current.temperature_2m)}${tempUnit}</div>
+                        <div class="current-temp">${Math.round(current.temperature_2m)}°C</div>
                         <div class="current-condition">${description}</div>
                         <div style="margin-top: 5px; opacity: 0.9; font-size: 0.95em;">
                             Feels like ${Math.round(current.apparent_temperature)}°C
@@ -765,11 +704,11 @@
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">💨 Wind</div>
-                        <div class="detail-value">${Math.round(current.wind_speed_10m)} ${windUnit}</div>
+                        <div class="detail-value">${Math.round(current.wind_speed_10m)} km/h</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">🌧️ Rain</div>
-                        <div class="detail-value">${current.rain} ${precipUnit}</div>
+                        <div class="detail-value">${current.rain} mm</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">☁️ Clouds</div>
@@ -782,10 +721,6 @@
 
         function displayHourlyForecast(hourly, units) {
             const container = document.getElementById('hourly-forecast');
-            const now = new Date();
-            const tempUnit = currentUnits === 'imperial' ? '°F' : '°C';
-            const precipUnit = currentUnits === 'imperial' ? 'in' : 'mm';
-            const windUnit = currentUnits === 'imperial' ? 'mph' : 'km/h';
 
             let html = `
                 <div class="hour-header">
@@ -793,35 +728,28 @@
                     <div></div>
                     <div>Temp</div>
                     <div>💧 Rain</div>
-                    <div>🌧️ ${precipUnit}</div>
+                    <div>🌧️ mm</div>
                     <div>💨 Wind</div>
                     <div>☁️ Cloud</div>
                 </div>
             `;
 
-            let hoursDisplayed = 0;
-            for (let i = 0; i < hourly.time.length && hoursDisplayed < 48; i++) {
-                const hourTime = new Date(hourly.time[i]);
+            for (let i = 0; i < 48; i++) {
+                const icon = getWeatherIcon(hourly.weather_code[i], hourly.time[i]);
+                const description = getWeatherDescription(hourly.weather_code[i]);
+                const time = formatDateTime(hourly.time[i]);
 
-                // Only show hours in the future
-                if (hourTime > now) {
-                    const icon = getWeatherIcon(hourly.weather_code[i], hourly.time[i]);
-                    const description = getWeatherDescription(hourly.weather_code[i]);
-                    const time = formatDateTime(hourly.time[i]);
-
-                    html += `
-                        <div class="hour-card">
-                            <div class="hour-time">${time}</div>
-                            <div class="hour-icon">${icon}</div>
-                            <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}${tempUnit}</div>
-                            <div class="hour-detail">${hourly.precipitation_probability[i]}%</div>
-                            <div class="hour-detail">${hourly.rain[i]}</div>
-                            <div class="hour-detail">${Math.round(hourly.wind_speed_10m[i])}</div>
-                            <div class="hour-detail">${hourly.cloud_cover[i]}%</div>
-                        </div>
-                    `;
-                    hoursDisplayed++;
-                }
+                html += `
+                    <div class="hour-card">
+                        <div class="hour-time">${time}</div>
+                        <div class="hour-icon">${icon}</div>
+                        <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}°</div>
+                        <div class="hour-detail">${hourly.precipitation_probability[i]}%</div>
+                        <div class="hour-detail">${hourly.rain[i]}</div>
+                        <div class="hour-detail">${Math.round(hourly.wind_speed_10m[i])}</div>
+                        <div class="hour-detail">${hourly.cloud_cover[i]}%</div>
+                    </div>
+                `;
             }
 
             container.innerHTML = html;
@@ -845,8 +773,8 @@
                         </div>
                         <div class="day-icon">${icon}</div>
                         <div class="day-temps">
-                            <span class="temp-max">${Math.round(daily.temperature_2m_max[i])}${currentUnits === 'imperial' ? '°F' : '°C'}</span>
-                            <span class="temp-min">${Math.round(daily.temperature_2m_min[i])}${currentUnits === 'imperial' ? '°F' : '°C'}</span>
+                            <span class="temp-max">${Math.round(daily.temperature_2m_max[i])}°</span>
+                            <span class="temp-min">${Math.round(daily.temperature_2m_min[i])}°</span>
                         </div>
                         <div class="day-condition">${description}</div>
                         <div class="day-detail">${daily.precipitation_probability_max[i]}%</div>
@@ -859,38 +787,6 @@
             container.innerHTML = html;
         }
 
-        function switchUnits(unit) {
-            currentUnits = unit;
-
-            // Update button states
-            document.getElementById('metricBtn').classList.remove('active');
-            document.getElementById('imperialBtn').classList.remove('active');
-
-            if (unit === 'metric') {
-                document.getElementById('metricBtn').classList.add('active');
-            } else {
-                document.getElementById('imperialBtn').classList.add('active');
-            }
-
-            // Reload weather with new units
-            fetchWeather();
-        }
-
-        // City selector event listener
-        document.getElementById('citySelector').addEventListener('change', function() {
-            const value = this.value.split(',');
-            latitude = parseFloat(value[0]);
-            longitude = parseFloat(value[1]);
-            timezone = value[2];
-
-            // Update location display
-            const selectedOption = this.options[this.selectedIndex].text;
-            document.getElementById('location').textContent = selectedOption;
-
-            // Reload weather for new city
-            fetchWeather();
-        });
-
         fetchWeather();
         setInterval(fetchWeather, 600000);
 
@@ -898,39 +794,7 @@
         window.addEventListener('resize', () => {
             const currentWeather = document.getElementById('current-weather');
             if (currentWeather.style.display !== 'none') {
-                function switchUnits(unit) {
-            currentUnits = unit;
-
-            // Update button states
-            document.getElementById('metricBtn').classList.remove('active');
-            document.getElementById('imperialBtn').classList.remove('active');
-
-            if (unit === 'metric') {
-                document.getElementById('metricBtn').classList.add('active');
-            } else {
-                document.getElementById('imperialBtn').classList.add('active');
-            }
-
-            // Reload weather with new units
-            fetchWeather();
-        }
-
-        // City selector event listener
-        document.getElementById('citySelector').addEventListener('change', function() {
-            const value = this.value.split(',');
-            latitude = parseFloat(value[0]);
-            longitude = parseFloat(value[1]);
-            timezone = value[2];
-
-            // Update location display
-            const selectedOption = this.options[this.selectedIndex].text;
-            document.getElementById('location').textContent = selectedOption;
-
-            // Reload weather for new city
-            fetchWeather();
-        });
-
-        fetchWeather();
+                fetchWeather();
             }
         });
     </script>
