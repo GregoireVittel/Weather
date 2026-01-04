@@ -2,110 +2,414 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Forecast</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Weather Croissy-sur-Seine</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #0f2847 0%, #1e3c72 100%); padding: 20px; min-height: 100vh; }
-        .container { max-width: 1200px; margin: 0 auto; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-radius: 20px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
-        h1 { color: white; text-align: center; margin-bottom: 5px; font-size: 1.5em; }
-        .location { text-align: center; color: white; margin-bottom: 20px; font-size: 1.8em; font-weight: 600; }
-        .controls { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 25px; flex-wrap: wrap; }
-        .city-boxes { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        .city-box { padding: 15px 25px; background: rgba(255,255,255,0.1); border: 3px solid rgba(255,255,255,0.3); border-radius: 12px; color: white; cursor: pointer; transition: all 0.3s; text-align: center; min-width: 180px; }
-        .city-box:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.6); transform: translateY(-2px); }
-        .city-box.active { background: rgba(135, 206, 235, 0.3); border-color: #87CEEB; box-shadow: 0 0 20px rgba(135, 206, 235, 0.4); }
-        .city-name { font-size: 1.2em; font-weight: bold; margin-bottom: 5px; }
-        .city-country { font-size: 0.9em; opacity: 0.9; }
-        .unit-buttons { display: flex; gap: 10px; }
-        .unit-toggle { padding: 10px 20px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); border-radius: 10px; color: white; font-size: 1em; cursor: pointer; transition: all 0.3s; font-weight: 600; }
-        .unit-toggle:hover { background: rgba(255,255,255,0.2); }
-        .unit-toggle.active { background: #FFD700; color: #1e3c72; }
-        .loading, .error { text-align: center; padding: 50px; font-size: 1.5em; color: white; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f2847 0%, #1e3c72 100%);
+            padding: 15px 10px;
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 100%;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 15px;
+            padding: 20px 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h1 { 
+            color: white; 
+            text-align: center; 
+            margin-bottom: 5px; 
+            font-size: 1.3em; 
+        }
+        .location { 
+            text-align: center; 
+            color: white; 
+            margin-bottom: 20px; 
+            font-size: 1.5em; 
+            font-weight: 600; 
+        }
+        .loading, .error { 
+            text-align: center; 
+            padding: 50px 20px; 
+            font-size: 1.2em; 
+            color: white; 
+        }
         .error { color: #ff6b6b; }
-        .current-weather { background: rgba(255,255,255,0.1); color: white; padding: 15px 20px; border-radius: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
-        .current-main { display: flex; align-items: center; gap: 20px; }
-        .current-temp { font-size: 3em; font-weight: bold; color: #FFD700; }
-        .current-condition { font-size: 1em; color: #87CEEB; font-weight: 600; }
-        .current-details { display: flex; gap: 20px; }
-        .detail-item { background: rgba(255,255,255,0.15); padding: 10px 15px; border-radius: 8px; text-align: center; min-width: 80px; }
-        .detail-label { font-size: 0.85em; }
-        .detail-value { font-size: 1.2em; font-weight: bold; margin-top: 3px; }
-        h2 { color: white; margin: 30px 0 20px 0; padding-bottom: 10px; border-bottom: 3px solid rgba(255,255,255,0.3); }
-        .hourly-forecast { max-height: 600px; overflow-y: auto; border-radius: 10px; }
-        .hour-header { background: rgba(15,40,71,0.9); color: #87CEEB; border-radius: 10px 10px 0 0; padding: 12px 15px; display: grid; grid-template-columns: 80px 40px 80px 70px 70px 70px 70px; gap: 10px; font-weight: bold; font-size: 0.95em; position: sticky; top: 0; z-index: 10; }
-        .hour-card { background: rgba(255,255,255,0.1); color: white; padding: 10px 15px; border-bottom: 1px solid rgba(255,255,255,0.1); display: grid; grid-template-columns: 80px 40px 80px 70px 70px 70px 70px; gap: 10px; }
+
+        .current-weather { 
+            background: rgba(255,255,255,0.1); 
+            color: white;
+            padding: 20px 15px; 
+            border-radius: 15px; 
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .current-main { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            gap: 15px; 
+            margin-bottom: 15px;
+        }
+        .current-icon { font-size: 3em; }
+        .current-temp { 
+            font-size: 3em; 
+            font-weight: bold; 
+            color: #FFD700; 
+        }
+        .current-condition { 
+            text-align: center;
+            font-size: 1.1em; 
+            color: #87CEEB; 
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .current-details { 
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .detail-item { 
+            background: rgba(255,255,255,0.15); 
+            padding: 10px; 
+            border-radius: 8px; 
+            text-align: center;
+        }
+        .detail-label { font-size: 0.85em; opacity: 0.9; }
+        .detail-value { font-size: 1.1em; font-weight: bold; margin-top: 3px; }
+
+        h2 { 
+            color: white; 
+            margin: 25px 0 15px 0; 
+            padding-bottom: 8px; 
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            font-size: 1.2em;
+        }
+
+        .hourly-forecast { 
+            margin-bottom: 25px; 
+            max-height: 450px; 
+            overflow-y: auto; 
+            overflow-x: hidden;
+            border-radius: 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .hourly-forecast::-webkit-scrollbar { width: 4px; }
+        .hourly-forecast::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); }
+        .hourly-forecast::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+
+        .hour-header { 
+            background: rgba(15,40,71,0.95); 
+            color: #87CEEB; 
+            border-radius: 10px 10px 0 0;
+            padding: 10px 8px;
+            display: grid; 
+            grid-template-columns: 55px 30px 45px 40px 40px 40px;
+            align-items: center; 
+            gap: 4px; 
+            font-weight: bold; 
+            font-size: 0.7em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .hour-header > div { text-align: center; }
+        .hour-header > div:first-child { text-align: left; }
+
+        .hour-card { 
+            background: rgba(255,255,255,0.1); 
+            color: white;
+            padding: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: grid; 
+            grid-template-columns: 55px 30px 45px 40px 40px 40px;
+            align-items: center; 
+            gap: 4px;
+        }
+        .hour-card:last-child { border-radius: 0 0 10px 10px; }
         .hour-card:hover { background: rgba(255,255,255,0.15); }
-        .hour-time { font-size: 0.9em; }
-        .hour-icon { font-size: 1.5em; text-align: center; }
-        .hour-temp { font-size: 1.4em; font-weight: bold; color: #FFD700; }
-        .hour-detail { font-size: 1.4em; font-weight: 600; text-align: center; }
-        .day-header { background: rgba(15,40,71,0.9); color: #87CEEB; border-radius: 10px 10px 0 0; padding: 12px 15px; display: grid; grid-template-columns: 100px 40px 80px auto 60px 60px 60px; gap: 10px; font-weight: bold; font-size: 0.95em; }
-        .day-card { background: rgba(255,255,255,0.1); color: white; padding: 15px 20px; border: 1px solid rgba(255,255,255,0.2); border-top: none; display: grid; grid-template-columns: 100px 40px 80px auto 60px 60px 60px; gap: 15px; }
+        .hour-time { font-size: 0.8em; font-weight: 500; }
+        .hour-icon { font-size: 1.3em; text-align: center; }
+        .hour-temp { font-size: 1em; font-weight: bold; color: #FFD700; text-align: center; }
+        .hour-detail { font-size: 0.85em; font-weight: 600; text-align: center; }
+
+        .day-header { 
+            background: rgba(15,40,71,0.95); 
+            color: #87CEEB; 
+            border-radius: 10px 10px 0 0;
+            padding: 10px 8px;
+            display: grid; 
+            grid-template-columns: 70px 30px 70px 1fr 45px;
+            align-items: center; 
+            gap: 5px; 
+            font-weight: bold; 
+            font-size: 0.7em;
+        }
+        .day-header > div { text-align: center; }
+        .day-header > div:first-child { text-align: left; }
+
+        .day-card { 
+            background: rgba(255,255,255,0.1); 
+            color: white;
+            padding: 12px 8px;
+            border: 1px solid rgba(255,255,255,0.2); 
+            border-top: none;
+            display: grid; 
+            grid-template-columns: 70px 30px 70px 1fr 45px;
+            align-items: center; 
+            gap: 5px;
+        }
         .day-card:last-child { border-radius: 0 0 10px 10px; }
         .day-card:hover { background: rgba(255,255,255,0.15); }
-        .day-name { font-weight: bold; font-size: 1.1em; }
-        .day-date { font-size: 0.9em; opacity: 0.8; }
-        .day-icon { font-size: 2em; text-align: center; }
-        .day-temps { display: flex; gap: 10px; font-size: 1.2em; }
-        .temp-max { font-weight: bold; color: #FFD700; }
-        .temp-min { color: #87CEEB; }
-        .day-detail { text-align: center; font-size: 0.9em; }
-        @media (max-width: 768px) {
-            .controls { flex-direction: column; }
-            .city-boxes { flex-direction: column; width: 100%; }
-            .city-box { width: 100%; }
-            .unit-buttons { width: 100%; justify-content: center; }
-            .unit-toggle { flex: 1; max-width: 150px; }
-            .current-weather { flex-direction: column; }
-            .hour-header, .hour-card { grid-template-columns: 60px 30px 50px 45px 45px 50px; padding: 8px 5px; gap: 4px; }
-            .hour-header > div:nth-child(7), .hour-card > div:nth-child(7) { display: none; }
-            .day-header, .day-card { grid-template-columns: 70px 35px 75px 1fr 50px; gap: 5px; }
-            .day-header > div:nth-child(6), .day-header > div:nth-child(7), .day-card > div:nth-child(6), .day-card > div:nth-child(7) { display: none; }
+        .day-name { font-weight: bold; font-size: 0.95em; }
+        .day-date { font-size: 0.8em; opacity: 0.8; }
+        .day-icon { font-size: 1.8em; text-align: center; }
+        .day-temps { 
+            display: flex; 
+            flex-direction: column;
+            gap: 2px; 
+            font-size: 1em;
+            text-align: center;
         }
+        .temp-max { font-weight: bold; color: #FFD700; }
+        .temp-min { color: #87CEEB; font-size: 0.9em; }
+        .day-condition { font-size: 0.85em; }
+        .day-detail { text-align: center; font-size: 0.85em; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🌤️ Weather Forecast</h1>
-        <div class="location" id="location">Croissy-sur-Seine, France</div>
-        <div class="controls">
-            <div class="city-boxes">
-                <div class="city-box active" data-lat="48.8797" data-lon="2.1439" data-tz="Europe/Paris" data-name="Croissy-sur-Seine, France">
-                    <div class="city-name">🇫🇷 Croissy-sur-Seine</div>
-                    <div class="city-country">France</div>
-                </div>
-                <div class="city-box" data-lat="40.1957" data-lon="-74.1682" data-tz="America/New_York" data-name="Farmingdale, New Jersey, USA">
-                    <div class="city-name">🇺🇸 Farmingdale</div>
-                    <div class="city-country">New Jersey, USA</div>
-                </div>
-            </div>
-            <div class="unit-buttons">
-                <button class="unit-toggle active" id="metricBtn">°C</button>
-                <button class="unit-toggle" id="imperialBtn">°F</button>
+        <h1>🌤️ Météo</h1>
+        <div class="location">Croissy-sur-Seine</div>
+
+        <div id="loading" class="loading">Chargement...</div>
+        <div id="error" class="error" style="display:none;"></div>
+
+        <div id="current-weather" style="display:none;"></div>
+
+        <div id="hourly-section" style="display:none;">
+            <h2>📊 Prévisions Horaires</h2>
+            <div class="hourly-forecast">
+                <div id="hourly-forecast"></div>
             </div>
         </div>
-        <div id="loading" class="loading">Loading...</div>
-        <div id="error" class="error" style="display:none;"></div>
-        <div id="current-weather" style="display:none;"></div>
-        <div id="hourly-section" style="display:none;"><h2>📊 Hourly Forecast</h2><div class="hourly-forecast"><div id="hourly-forecast"></div></div></div>
-        <div id="daily-section" style="display:none;"><h2>📅 7-Day Forecast</h2><div id="daily-forecast"></div></div>
+
+        <div id="daily-section" style="display:none;">
+            <h2>📅 Prévisions 7 Jours</h2>
+            <div id="daily-forecast"></div>
+        </div>
     </div>
+
     <script>
-        let latitude=48.8797,longitude=2.1439,timezone='Europe/Paris',currentUnits='metric';
-        const weatherCodes={0:{description:'Clear sky',iconDay:'☀️',iconNight:'🌙'},1:{description:'Mainly clear',iconDay:'🌤️',iconNight:'🌙'},2:{description:'Partly cloudy',iconDay:'⛅',iconNight:'☁️'},3:{description:'Overcast',iconDay:'☁️',iconNight:'☁️'},45:{description:'Fog',iconDay:'🌫️',iconNight:'🌫️'},51:{description:'Light drizzle',iconDay:'🌦️',iconNight:'🌧️'},61:{description:'Light rain',iconDay:'🌧️',iconNight:'🌧️'},63:{description:'Rain',iconDay:'🌧️',iconNight:'🌧️'},71:{description:'Light snow',iconDay:'🌨️',iconNight:'🌨️'},80:{description:'Light showers',iconDay:'🌦️',iconNight:'🌧️'},95:{description:'Thunderstorm',iconDay:'⛈️',iconNight:'⛈️'}};
-        function getWeatherIcon(code,dateString){const weather=weatherCodes[code]||{iconDay:'🌡️',iconNight:'🌡️'};const date=new Date(dateString);const hour=date.getHours();return(hour<6||hour>=20)?weather.iconNight:weather.iconDay;}
-        function getWeatherDescription(code){return(weatherCodes[code]||{description:'Unknown'}).description;}
-        function formatDateTime(dateString){const date=new Date(dateString);const dayName=date.toLocaleDateString('fr-FR',{weekday:'short'});const time=date.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',hour12:false});return `${dayName} ${time}`;}
-        function formatDate(dateString){const date=new Date(dateString);return date.toLocaleDateString('fr-FR',{month:'short',day:'numeric'});}
-        function getDayName(dateString){const date=new Date(dateString);const today=new Date();const tomorrow=new Date(today);tomorrow.setDate(tomorrow.getDate()+1);if(date.toDateString()===today.toDateString())return 'Today';if(date.toDateString()===tomorrow.toDateString())return 'Tomorrow';return date.toLocaleDateString('fr-FR',{weekday:'long'});}
-        async function fetchWeather(){try{console.log('Fetching weather...');document.getElementById('loading').style.display='block';document.getElementById('error').style.display='none';const tempUnit=currentUnits==='imperial'?'&temperature_unit=fahrenheit':'';const windUnit=currentUnits==='imperial'?'&wind_speed_unit=mph':'';const precipUnit=currentUnits==='imperial'?'&precipitation_unit=inch':'';const url=`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,relative_humidity_2m,precipitation,rain,cloud_cover,wind_speed_10m&hourly=temperature_2m,precipitation_probability,rain,weather_code,cloud_cover,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,rain_sum,wind_speed_10m_max,precipitation_probability_max&timezone=${encodeURIComponent(timezone)}${tempUnit}${windUnit}${precipUnit}`;console.log('URL:',url);const response=await fetch(url);if(!response.ok)throw new Error(`HTTP ${response.status}`);const data=await response.json();displayCurrentWeather(data.current);displayHourlyForecast(data.hourly);displayDailyForecast(data.daily);document.getElementById('loading').style.display='none';document.getElementById('current-weather').style.display='flex';document.getElementById('hourly-section').style.display='block';document.getElementById('daily-section').style.display='block';}catch(error){console.error('Error:',error);document.getElementById('loading').style.display='none';document.getElementById('error').style.display='block';document.getElementById('error').textContent=`Error: ${error.message}. Open console (F12) for details.`;}}
-        function displayCurrentWeather(current){const icon=getWeatherIcon(current.weather_code,new Date().toISOString());const description=getWeatherDescription(current.weather_code);const tempUnit=currentUnits==='imperial'?'°F':'°C';const windUnit=currentUnits==='imperial'?'mph':'km/h';const precipUnit=currentUnits==='imperial'?'in':'mm';document.getElementById('current-weather').innerHTML=`<div class="current-main"><div class="hour-icon">${icon}</div><div><div class="current-temp">${Math.round(current.temperature_2m)}${tempUnit}</div><div class="current-condition">${description}</div></div></div><div class="current-details"><div class="detail-item"><div class="detail-label">💧 Humidity</div><div class="detail-value">${current.relative_humidity_2m}%</div></div><div class="detail-item"><div class="detail-label">💨 Wind</div><div class="detail-value">${Math.round(current.wind_speed_10m)} ${windUnit}</div></div><div class="detail-item"><div class="detail-label">🌧️ Rain</div><div class="detail-value">${current.rain} ${precipUnit}</div></div><div class="detail-item"><div class="detail-label">☁️ Clouds</div><div class="detail-value">${current.cloud_cover}%</div></div></div>`;}
-        function displayHourlyForecast(hourly){const container=document.getElementById('hourly-forecast');const now=new Date();const tempUnit=currentUnits==='imperial'?'°F':'°C';const precipUnit=currentUnits==='imperial'?'in':'mm';let html=`<div class="hour-header"><div>Time</div><div></div><div>Temp</div><div>💧 Rain</div><div>🌧️ ${precipUnit}</div><div>💨 Wind</div><div>☁️ Cloud</div></div>`;let hoursDisplayed=0;for(let i=0;i<hourly.time.length&&hoursDisplayed<48;i++){const hourTime=new Date(hourly.time[i]);if(hourTime>now){const icon=getWeatherIcon(hourly.weather_code[i],hourly.time[i]);const time=formatDateTime(hourly.time[i]);html+=`<div class="hour-card"><div class="hour-time">${time}</div><div class="hour-icon">${icon}</div><div class="hour-temp">${Math.round(hourly.temperature_2m[i])}${tempUnit}</div><div class="hour-detail">${hourly.precipitation_probability[i]}%</div><div class="hour-detail">${hourly.rain[i]}</div><div class="hour-detail">${Math.round(hourly.wind_speed_10m[i])}</div><div class="hour-detail">${hourly.cloud_cover[i]}%</div></div>`;hoursDisplayed++;}}container.innerHTML=html;}
-        function displayDailyForecast(daily){const container=document.getElementById('daily-forecast');const precipUnit=currentUnits==='imperial'?'in':'mm';const windUnit=currentUnits==='imperial'?'mph':'km/h';let html=`<div class="day-header"><div>Day</div><div></div><div>Temp</div><div>Condition</div><div>💧 Rain</div><div>🌧️ ${precipUnit}</div><div>💨 ${windUnit}</div></div>`;for(let i=0;i<7;i++){const icon=getWeatherIcon(daily.weather_code[i],daily.time[i]+'T12:00:00');const description=getWeatherDescription(daily.weather_code[i]);const dayName=getDayName(daily.time[i]);const date=formatDate(daily.time[i]);html+=`<div class="day-card"><div class="day-name-date"><div class="day-name">${dayName}</div><div class="day-date">${date}</div></div><div class="day-icon">${icon}</div><div class="day-temps"><span class="temp-max">${Math.round(daily.temperature_2m_max[i])}${currentUnits==='imperial'?'°F':'°C'}</span><span class="temp-min">${Math.round(daily.temperature_2m_min[i])}${currentUnits==='imperial'?'°F':'°C'}</span></div><div class="day-condition">${description}</div><div class="day-detail">${daily.precipitation_probability_max[i]}%</div><div class="day-detail">${daily.rain_sum[i]}</div><div class="day-detail">${Math.round(daily.wind_speed_10m_max[i])}</div></div>`;}container.innerHTML=html;}
-        document.querySelectorAll('.city-box').forEach(box=>{box.addEventListener('click',function(){document.querySelectorAll('.city-box').forEach(b=>b.classList.remove('active'));this.classList.add('active');latitude=parseFloat(this.dataset.lat);longitude=parseFloat(this.dataset.lon);timezone=this.dataset.tz;document.getElementById('location').textContent=this.dataset.name;fetchWeather();});});
-        document.getElementById('metricBtn').addEventListener('click',function(){if(currentUnits!=='metric'){currentUnits='metric';document.getElementById('metricBtn').classList.add('active');document.getElementById('imperialBtn').classList.remove('active');fetchWeather();}});
-        document.getElementById('imperialBtn').addEventListener('click',function(){if(currentUnits!=='imperial'){currentUnits='imperial';document.getElementById('imperialBtn').classList.add('active');document.getElementById('metricBtn').classList.remove('active');fetchWeather();}});
+        const latitude = 48.8797;
+        const longitude = 2.1439;
+        const timezone = 'Europe/Paris';
+
+        const weatherCodes = {
+            0: { description: 'Ciel dégagé', iconDay: '☀️', iconNight: '🌙' },
+            1: { description: 'Plutôt dégagé', iconDay: '🌤️', iconNight: '🌙' },
+            2: { description: 'Partiellement nuageux', iconDay: '⛅', iconNight: '☁️' },
+            3: { description: 'Couvert', iconDay: '☁️', iconNight: '☁️' },
+            45: { description: 'Brouillard', iconDay: '🌫️', iconNight: '🌫️' },
+            48: { description: 'Brouillard', iconDay: '🌫️', iconNight: '🌫️' },
+            51: { description: 'Bruine légère', iconDay: '🌦️', iconNight: '🌧️' },
+            53: { description: 'Bruine', iconDay: '🌦️', iconNight: '🌧️' },
+            55: { description: 'Bruine forte', iconDay: '🌧️', iconNight: '🌧️' },
+            61: { description: 'Pluie légère', iconDay: '🌧️', iconNight: '🌧️' },
+            63: { description: 'Pluie', iconDay: '🌧️', iconNight: '🌧️' },
+            65: { description: 'Pluie forte', iconDay: '🌧️', iconNight: '🌧️' },
+            71: { description: 'Neige légère', iconDay: '🌨️', iconNight: '🌨️' },
+            73: { description: 'Neige', iconDay: '🌨️', iconNight: '🌨️' },
+            75: { description: 'Neige forte', iconDay: '❄️', iconNight: '❄️' },
+            80: { description: 'Averses légères', iconDay: '🌦️', iconNight: '🌧️' },
+            81: { description: 'Averses', iconDay: '🌧️', iconNight: '🌧️' },
+            82: { description: 'Averses fortes', iconDay: '⛈️', iconNight: '⛈️' },
+            95: { description: 'Orage', iconDay: '⛈️', iconNight: '⛈️' }
+        };
+
+        function getWeatherIcon(code, dateString) {
+            const weather = weatherCodes[code] || { iconDay: '🌡️', iconNight: '🌡️' };
+            const date = new Date(dateString);
+            const hour = date.getHours();
+            return (hour < 6 || hour >= 20) ? weather.iconNight : weather.iconDay;
+        }
+
+        function getWeatherDescription(code) {
+            return (weatherCodes[code] || { description: 'Inconnu' }).description;
+        }
+
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            const dayName = date.toLocaleDateString('fr-FR', { weekday: 'short' });
+            const time = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', hour12: false });
+            return `${dayName} ${time}`;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', { month: 'short', day: 'numeric' });
+        }
+
+        function getDayName(dateString) {
+            const date = new Date(dateString);
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            if (date.toDateString() === today.toDateString()) return "Aujourd'hui";
+            if (date.toDateString() === tomorrow.toDateString()) return 'Demain';
+            return date.toLocaleDateString('fr-FR', { weekday: 'long' });
+        }
+
+        async function fetchWeather() {
+            try {
+                console.log('Chargement météo Croissy-sur-Seine...');
+
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('error').style.display = 'none';
+
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,relative_humidity_2m,precipitation,rain,cloud_cover,wind_speed_10m&hourly=temperature_2m,precipitation_probability,rain,weather_code,cloud_cover,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,rain_sum,wind_speed_10m_max,precipitation_probability_max&timezone=${encodeURIComponent(timezone)}`;
+
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                displayCurrentWeather(data.current);
+                displayHourlyForecast(data.hourly);
+                displayDailyForecast(data.daily);
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('current-weather').style.display = 'block';
+                document.getElementById('hourly-section').style.display = 'block';
+                document.getElementById('daily-section').style.display = 'block';
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = `Erreur: ${error.message}`;
+            }
+        }
+
+        function displayCurrentWeather(current) {
+            const icon = getWeatherIcon(current.weather_code, new Date().toISOString());
+            const description = getWeatherDescription(current.weather_code);
+
+            document.getElementById('current-weather').innerHTML = `
+                <div class="current-main">
+                    <div class="current-icon">${icon}</div>
+                    <div class="current-temp">${Math.round(current.temperature_2m)}°C</div>
+                </div>
+                <div class="current-condition">${description}</div>
+                <div class="current-details">
+                    <div class="detail-item">
+                        <div class="detail-label">💧 Humidité</div>
+                        <div class="detail-value">${current.relative_humidity_2m}%</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">💨 Vent</div>
+                        <div class="detail-value">${Math.round(current.wind_speed_10m)} km/h</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">🌧️ Pluie</div>
+                        <div class="detail-value">${current.rain} mm</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">☁️ Nuages</div>
+                        <div class="detail-value">${current.cloud_cover}%</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayHourlyForecast(hourly) {
+            const container = document.getElementById('hourly-forecast');
+            const now = new Date();
+
+            let html = `
+                <div class="hour-header">
+                    <div>Heure</div>
+                    <div></div>
+                    <div>Temp</div>
+                    <div>💧%</div>
+                    <div>🌧️mm</div>
+                    <div>💨</div>
+                </div>
+            `;
+
+            let hoursDisplayed = 0;
+            for (let i = 0; i < hourly.time.length && hoursDisplayed < 48; i++) {
+                const hourTime = new Date(hourly.time[i]);
+                if (hourTime > now) {
+                    const icon = getWeatherIcon(hourly.weather_code[i], hourly.time[i]);
+                    const time = formatDateTime(hourly.time[i]);
+
+                    html += `
+                        <div class="hour-card">
+                            <div class="hour-time">${time}</div>
+                            <div class="hour-icon">${icon}</div>
+                            <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}°</div>
+                            <div class="hour-detail">${hourly.precipitation_probability[i]}</div>
+                            <div class="hour-detail">${hourly.rain[i]}</div>
+                            <div class="hour-detail">${Math.round(hourly.wind_speed_10m[i])}</div>
+                        </div>
+                    `;
+                    hoursDisplayed++;
+                }
+            }
+
+            container.innerHTML = html;
+        }
+
+        function displayDailyForecast(daily) {
+            const container = document.getElementById('daily-forecast');
+
+            let html = `
+                <div class="day-header">
+                    <div>Jour</div>
+                    <div></div>
+                    <div>Temp</div>
+                    <div>Condition</div>
+                    <div>💧%</div>
+                </div>
+            `;
+
+            for (let i = 0; i < 7; i++) {
+                const icon = getWeatherIcon(daily.weather_code[i], daily.time[i] + 'T12:00:00');
+                const description = getWeatherDescription(daily.weather_code[i]);
+                const dayName = getDayName(daily.time[i]);
+                const date = formatDate(daily.time[i]);
+
+                html += `
+                    <div class="day-card">
+                        <div class="day-name-date">
+                            <div class="day-name">${dayName}</div>
+                            <div class="day-date">${date}</div>
+                        </div>
+                        <div class="day-icon">${icon}</div>
+                        <div class="day-temps">
+                            <span class="temp-max">${Math.round(daily.temperature_2m_max[i])}°C</span>
+                            <span class="temp-min">${Math.round(daily.temperature_2m_min[i])}°C</span>
+                        </div>
+                        <div class="day-condition">${description}</div>
+                        <div class="day-detail">${daily.precipitation_probability_max[i]}%</div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Load on page ready
         fetchWeather();
     </script>
 </body>
